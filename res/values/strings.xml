@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GovNews</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="imgDesc">this is a iamge</string>
+</resources>
