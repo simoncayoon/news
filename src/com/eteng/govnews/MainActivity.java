@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity implements
 		initPager();
 		// fragment tabhost
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-		mTabHost.setup(this, getSupportFragmentManager(), R.id.viewpager);
+		mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 		
 		/* 添加tab的图标 */
 		// 得到fragment的个数
