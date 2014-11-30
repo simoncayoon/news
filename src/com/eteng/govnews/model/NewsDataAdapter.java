@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.eteng.govnews.R;
+import com.eteng.govnews.utils.DebugFlags;
 
 public class NewsDataAdapter extends BaseAdapter {
 
@@ -18,6 +19,7 @@ public class NewsDataAdapter extends BaseAdapter {
 	
 	public NewsDataAdapter(Context ctx, ArrayList<NewsInfo> data){
 		this.listData = data;
+		DebugFlags.logD("NewsDataAdapter", "数据量 ：  " + data.size());
 		inflater = (LayoutInflater) ctx
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -56,7 +58,7 @@ public class NewsDataAdapter extends BaseAdapter {
 		}
 		NewsInfo info = listData.get(position);
 		holder.vTitle.setText(info.getNewsTitle());
-		holder.vTitle.setText(info.getNewsDate());
+		holder.vDate.setText(info.getNewsDate());
 
 		return convertView;
 	}

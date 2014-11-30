@@ -41,7 +41,6 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	private void initView() {
-		DebugFlags.logD(TAG, "initView");
 		initPager();
 		// fragment tabhost
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
@@ -66,7 +65,6 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	private void initPager() {
-		DebugFlags.logD(TAG, "initPager");
 		funcViewPager = (ViewPager) findViewById(R.id.viewpager);
 		Fragment fragment1 = new ImpNoticFragment();
 		Fragment fragment2 = new GovFragment();
@@ -102,7 +100,6 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onTabChanged(String tabId) {
-		DebugFlags.logD(TAG, "tab change");
 		int position = mTabHost.getCurrentTab();
 		funcViewPager.setCurrentItem(position);
 		
@@ -120,7 +117,5 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onPageSelected(int arg0) {
-		DebugFlags.logD(TAG, "viewpage position 是 " + arg0);
-
 	}
 }

@@ -1,5 +1,8 @@
 package com.eteng.govnews;
 
+import java.net.URLDecoder;
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.eteng.govnews.model.Constants;
+import com.eteng.govnews.model.NewsDataAdapter;
+import com.eteng.govnews.model.NewsInfo;
 import com.eteng.govnews.utils.DebugFlags;
 
 public class ImpNoticFragment extends Fragment implements OnItemClickListener{
@@ -37,12 +42,14 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener{
 	/** 工具类 **/
 	private JsonObjectRequest jsonObjRequest;
 	private RequestQueue mVolleyQueue;
+	private ArrayList<NewsInfo> dataList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mVolleyQueue = Volley.newRequestQueue(getActivity());
+		dataList = new ArrayList<NewsInfo>();
 	}
 	
 	@Override
@@ -69,23 +76,30 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener{
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
 		builder.appendQueryParameter("PageSize", "20");
-		builder.appendQueryParameter("type", "2");
+		builder.appendQueryParameter("type", Constants.TYPE_NOTICE);
 		jsonObjRequest = new JsonObjectRequest(Request.Method.GET,
 				builder.toString(), null, new Response.Listener<JSONObject>() {
 
 					@Override
 					public void onResponse(JSONObject respon) {
-						DebugFlags.logD("test", respon.toString());
-						JSONArray array;
-//						try {
-//							array = new JSONArray(respon.getString("Message"));
-//							JSONObject content = new JSONObject(
-//									array.getString(0));
-//							// initData(content);
-//						} catch (JSONException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
+						
+						
+						try {
+							if(respon.getString("code").equals("0")){//返回数据正常
+								
+								JSONArray contentArray = new JSONArray(respon.getString("msg"));
+								parseToList(contentArray);
+								impoListView.setAdapter(new NewsDataAdapter(getActivity(), dataList));
+							}else if(respon.getString("code").equals("99")){//服务端错误
+								
+							}else {//请求参数错误
+								
+							}
+							
+						} catch (Exception e) {
+							
+							e.printStackTrace();
+						}
 						
 					}
 				}, new Response.ErrorListener() {
@@ -123,5 +137,24 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener{
 			long id) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * 将JSON数组解析成相应model数组
+	 * @param jsonArray
+	 * @throws Exception
+	 */
+	private void parseToList(JSONArray jsonArray) throws Exception{
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject item = new JSONObject(jsonArray.getString(i));
+			NewsInfo vInfo = new NewsInfo();
+			vInfo.setNewsId(item.getString("id"));
+			vInfo.setNewsTitle(item.getString("ntf_ttl"));
+			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"), "UTF-8");
+//			DebugFlags.logD("test", newsContent);
+			vInfo.setNewsContent(newsContent);
+			vInfo.setNewsDate(item.getString("cre_date"));
+			dataList.add(vInfo);
+		}
 	}
 }
