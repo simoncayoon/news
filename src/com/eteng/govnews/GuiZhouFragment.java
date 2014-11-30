@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.data_list_view, null);
 		gzListView = (ListView) view.findViewById(R.id.news_list_view);
+		gzListView.setOnItemClickListener(this);
 		getNews();
 		return view;
 	}
@@ -69,7 +71,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
 		builder.appendQueryParameter("PageSize", "20");
-		builder.appendQueryParameter("type", Constants.TYPE_GOV);
+		builder.appendQueryParameter("type", Constants.TYPE_GZ);
 		jsonObjRequest = new JsonObjectRequest(Request.Method.GET,
 				builder.toString(), null, new Response.Listener<JSONObject>() {
 
@@ -128,8 +130,12 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-
+		NewsInfo item = dataList.get(position);
+		Intent mIntent = new Intent(getActivity(), DetailCotentActivity.class);
+		mIntent.putExtra("title", item.getNewsTitle());
+		mIntent.putExtra("content", item.getNewsContent());
+		mIntent.putExtra("category", item.getNewsCategoty());
+		startActivity(mIntent);
 	}
 
 	/**
@@ -149,6 +155,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 //			DebugFlags.logD("test", newsContent);
 			vInfo.setNewsContent(newsContent);
 			vInfo.setNewsDate(item.getString("cre_date"));
+			vInfo.setNewsCategoty(Constants.TYPE_GZ);
 			dataList.add(vInfo);
 		}
 	}

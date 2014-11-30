@@ -8,10 +8,9 @@
         android:id="@+id/news_summary_title"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:layout_weight="1"
-        android:text="xxx"
-        android:paddingLeft="30dp"
+        android:paddingLeft="80dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:singleLine="true"
@@ -21,8 +20,7 @@
         android:id="@+id/news_summary_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="xxx"
+        android:textSize="25sp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="80dp"/>
 </LinearLayout>

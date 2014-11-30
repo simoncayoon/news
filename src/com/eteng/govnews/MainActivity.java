@@ -3,8 +3,6 @@ package com.eteng.govnews;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.eteng.govnews.utils.DebugFlags;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,7 +11,9 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TabWidget;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 
@@ -102,7 +102,6 @@ public class MainActivity extends FragmentActivity implements
 	public void onTabChanged(String tabId) {
 		int position = mTabHost.getCurrentTab();
 		funcViewPager.setCurrentItem(position);
-		
 	}
 
 	@Override
@@ -116,6 +115,11 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onPageSelected(int arg0) {
+	public void onPageSelected(int index) {
+		TabWidget widget = mTabHost.getTabWidget();
+		int oldFocusability = widget.getDescendantFocusability();
+		widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+		mTabHost.setCurrentTab(index);
+		widget.setDescendantFocusability(oldFocusability);
 	}
 }

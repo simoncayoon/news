@@ -59,6 +59,7 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener{
 		DebugFlags.logD("test", "fragment 调用!");
 		View view = inflater.inflate(R.layout.data_list_view, null);
 		impoListView = (ListView) view.findViewById(R.id.news_list_view);
+		impoListView.setOnItemClickListener(this);
 		getNews();
 		ViewGroup parent = (ViewGroup) view.getParent();
 		if (parent != null) {
@@ -154,6 +155,7 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener{
 //			DebugFlags.logD("test", newsContent);
 			vInfo.setNewsContent(newsContent);
 			vInfo.setNewsDate(item.getString("cre_date"));
+			vInfo.setNewsCategoty(Constants.TYPE_NOTICE);
 			dataList.add(vInfo);
 		}
 	}

@@ -1,7 +1,11 @@
 package com.eteng.govnews;
 
+import com.eteng.govnews.model.Constants;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,14 +29,15 @@ public class DetailCotentActivity extends Activity {
 		title = getIntent().getStringExtra("title");
 		content = getIntent().getStringExtra("content");
 		category = getIntent().getStringExtra("category");
-		if(category.equals("FORM_IMPO")){
-			
-		}else if(category.equals("FORM_GOV")){
-			
-		}else if(category.equals("FROM_GZ")){
-			
+		if(category.equals(Constants.TYPE_GOV)){
+			naviView.setImageResource(R.drawable.gov_navi_detail_img);
+		}else if(category.equals(Constants.TYPE_GZ)){
+			naviView.setImageResource(R.drawable.gz_navi_detail_img);
+		}else if(category.equals(Constants.TYPE_NOTICE)){
+			naviView.setImageResource(R.drawable.impo_navi_detail_img);
 		}
 		titleView.setText(title);
-		contentView.setText(content);
+		contentView.setText(Html.fromHtml(content));
+		contentView.setMovementMethod(ScrollingMovementMethod.getInstance());
 	}
 }

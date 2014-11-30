@@ -57,7 +57,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.data_list_view, null);
 		govListView = (ListView) view.findViewById(R.id.news_list_view);
-		
+		govListView.setOnItemClickListener(this);
 		 getNews();
 		return view;
 	}
@@ -150,6 +150,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 //			DebugFlags.logD("test", newsContent);
 			vInfo.setNewsContent(newsContent);
 			vInfo.setNewsDate(item.getString("cre_date"));
+			vInfo.setNewsCategoty(Constants.TYPE_GOV);
 			dataList.add(vInfo);
 		}
 	}
