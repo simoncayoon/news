@@ -6,7 +6,7 @@ public class Constants {
 	
 	public static final String TYPE_NOTICE = "3";
 	
-	public static final String TYPE_GOV = "2";
+	public static final String TYPE_GOV = "1";
 	
-	public static final String TYPE_GZ = "1";
+	public static final String TYPE_GZ = "2";
 }

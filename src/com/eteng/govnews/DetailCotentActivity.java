@@ -1,13 +1,13 @@
 package com.eteng.govnews;
 
-import com.eteng.govnews.model.Constants;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.eteng.govnews.model.Constants;
 
 public class DetailCotentActivity extends Activity {
 

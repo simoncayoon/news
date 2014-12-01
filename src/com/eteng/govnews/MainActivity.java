@@ -13,9 +13,9 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TabWidget;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 
 public class MainActivity extends FragmentActivity implements
 		OnPageChangeListener, OnTabChangeListener {

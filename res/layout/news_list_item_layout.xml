@@ -10,10 +10,11 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:layout_weight="1"
-        android:paddingLeft="80dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
         android:singleLine="true"
+        android:paddingLeft="30dp"
         />
     
 	<TextView
@@ -21,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="80dp"/>
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
+        android:paddingRight="30dp"/>
 </LinearLayout>

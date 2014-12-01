@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.graphics.Color;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,7 @@ import com.eteng.govnews.utils.DebugFlags;
 public class GovFragment extends Fragment implements OnItemClickListener {
 
 	private ListView govListView;
+	private ProgressDialog mProgress;
 
 	/** 工具类 **/
 	private JsonObjectRequest jsonObjRequest;
@@ -58,7 +60,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 		View view = inflater.inflate(R.layout.data_list_view, null);
 		govListView = (ListView) view.findViewById(R.id.news_list_view);
 		govListView.setOnItemClickListener(this);
-		 getNews();
+		getNews();
 		return view;
 	}
 
@@ -66,6 +68,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 	 * 获取网络新闻列表
 	 */
 	private void getNews() {
+//		showProgress();
 		String url = Constants.WS_ADDRESS;// 接口地址
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
@@ -83,7 +86,8 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 								JSONArray contentArray = new JSONArray(
 										respon.getString("msg"));
 								parseToList(contentArray);
-								govListView.setAdapter(new NewsDataAdapter(getActivity(), dataList));
+								govListView.setAdapter(new NewsDataAdapter(
+										getActivity(), dataList));
 							} else if (respon.getString("code").equals("99")) {// 服务端错误
 
 							} else {// 请求参数错误
@@ -93,6 +97,8 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 						} catch (Exception e) {
 
 							e.printStackTrace();
+						} finally {
+//							stopProgress();
 						}
 
 					}
@@ -100,7 +106,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-
+//						stopProgress();
 						if (error instanceof NetworkError) {
 							DebugFlags.logD("test", "NetworkError");
 						} else if (error instanceof ClientError) {
@@ -129,7 +135,12 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
+		NewsInfo item = dataList.get(position);
+		Intent mIntent = new Intent(getActivity(), DetailCotentActivity.class);
+		mIntent.putExtra("title", item.getNewsTitle());
+		mIntent.putExtra("content", item.getNewsContent());
+		mIntent.putExtra("category", item.getNewsCategoty());
+		startActivity(mIntent);
 
 	}
 
@@ -147,11 +158,19 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 			vInfo.setNewsTitle(item.getString("ntf_ttl"));
 			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
 					"UTF-8");
-//			DebugFlags.logD("test", newsContent);
+			// DebugFlags.logD("test", newsContent);
 			vInfo.setNewsContent(newsContent);
 			vInfo.setNewsDate(item.getString("cre_date"));
 			vInfo.setNewsCategoty(Constants.TYPE_GOV);
 			dataList.add(vInfo);
 		}
 	}
+
+//	private void showProgress() {
+//		mProgress = ProgressDialog.show(getActivity(), "", "加载中...");
+//	}
+//
+//	private void stopProgress() {
+//		mProgress.cancel();
+//	}
 }

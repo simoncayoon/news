@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,6 +40,7 @@ import com.eteng.govnews.utils.DebugFlags;
 public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 
 	private ListView gzListView;
+	private ProgressDialog mProgress;
 
 	/** 工具类 **/
 	private JsonObjectRequest jsonObjRequest;
@@ -67,6 +68,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 	 * 获取网络新闻列表
 	 */
 	private void getNews() {
+		showProgress();
 		String url = Constants.WS_ADDRESS;// 接口地址
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
@@ -94,6 +96,8 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 						} catch (Exception e) {
 
 							e.printStackTrace();
+						}finally{
+							stopProgress();
 						}
 
 					}
@@ -101,7 +105,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-
+						stopProgress();
 						if (error instanceof NetworkError) {
 							DebugFlags.logD("test", "NetworkError");
 						} else if (error instanceof ClientError) {
@@ -158,5 +162,12 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 			vInfo.setNewsCategoty(Constants.TYPE_GZ);
 			dataList.add(vInfo);
 		}
+	}
+	private void showProgress() {
+		mProgress = ProgressDialog.show(getActivity(), "", "加载中...");
+	}
+
+	private void stopProgress() {
+		mProgress.cancel();
 	}
 }

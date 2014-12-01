@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/newsbg"
+    android:background="@drawable/main_bg_test"
     android:orientation="vertical"
     tools:context="${packageName}.${activityClass}" >
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:background="#22e9e8ed" >
 
         <FrameLayout
