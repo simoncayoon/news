@@ -1,6 +1,9 @@
 package com.eteng.govnews.model;
 
-public class NewsInfo {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NewsInfo implements Parcelable{
 
 	/**
 	 * 新闻ID
@@ -52,5 +55,32 @@ public class NewsInfo {
 	}
 	public void setNewsCategoty(String newsCategoty) {
 		this.newsCategoty = newsCategoty;
+	}
+	
+	public static final Parcelable.Creator<NewsInfo> CREATOR = new Creator<NewsInfo>() { 
+		  public NewsInfo createFromParcel(Parcel source) { 
+		      NewsInfo newsInfo = new NewsInfo(); 
+		      newsInfo.newsTitle = source.readString(); 
+		      newsInfo.newsContent = source.readString(); 
+		      newsInfo.newsCategoty = source.readString(); 
+		      return newsInfo; 
+		  }
+
+		@Override
+		public NewsInfo[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return new NewsInfo[size];
+		} 
+	};
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.newsTitle);
+		dest.writeString(this.newsContent);
+		dest.writeString(this.newsCategoty);
 	}
 }

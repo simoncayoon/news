@@ -69,10 +69,10 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 	 */
 	private void getNews() {
 		showProgress();
-		String url = Constants.WS_ADDRESS;// 接口地址
+		String url = Constants.WS_ADDRESS + Constants.GET_LIST;// 接口地址
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
-		builder.appendQueryParameter("PageSize", "20");
+		builder.appendQueryParameter("PageSize", Constants.PAGE_SIZE);
 		builder.appendQueryParameter("type", Constants.TYPE_GZ);
 		jsonObjRequest = new JsonObjectRequest(Request.Method.GET,
 				builder.toString(), null, new Response.Listener<JSONObject>() {
@@ -86,7 +86,8 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 								JSONArray contentArray = new JSONArray(
 										respon.getString("msg"));
 								parseToList(contentArray);
-								gzListView.setAdapter(new NewsDataAdapter(getActivity(), dataList));
+								gzListView.setAdapter(new NewsDataAdapter(
+										getActivity(), dataList));
 							} else if (respon.getString("code").equals("99")) {// 服务端错误
 
 							} else {// 请求参数错误
@@ -96,7 +97,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 						} catch (Exception e) {
 
 							e.printStackTrace();
-						}finally{
+						} finally {
 							stopProgress();
 						}
 
@@ -136,9 +137,8 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 			long id) {
 		NewsInfo item = dataList.get(position);
 		Intent mIntent = new Intent(getActivity(), DetailCotentActivity.class);
-		mIntent.putExtra("title", item.getNewsTitle());
-		mIntent.putExtra("content", item.getNewsContent());
-		mIntent.putExtra("category", item.getNewsCategoty());
+		mIntent.putExtra(Constants.INTENT_ID_KEY, item.getNewsId());
+		mIntent.putExtra(Constants.INTENT_CATEGORY, item.getNewsCategoty());
 		startActivity(mIntent);
 	}
 
@@ -149,6 +149,7 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 	 * @throws Exception
 	 */
 	private void parseToList(JSONArray jsonArray) throws Exception {
+		dataList.clear();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject item = new JSONObject(jsonArray.getString(i));
 			NewsInfo vInfo = new NewsInfo();
@@ -156,13 +157,14 @@ public class GuiZhouFragment extends Fragment implements OnItemClickListener {
 			vInfo.setNewsTitle(item.getString("ntf_ttl"));
 			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
 					"UTF-8");
-//			DebugFlags.logD("test", newsContent);
+			// DebugFlags.logD("test", newsContent);
 			vInfo.setNewsContent(newsContent);
 			vInfo.setNewsDate(item.getString("cre_date"));
 			vInfo.setNewsCategoty(Constants.TYPE_GZ);
 			dataList.add(vInfo);
 		}
 	}
+
 	private void showProgress() {
 		mProgress = ProgressDialog.show(getActivity(), "", "加载中...");
 	}

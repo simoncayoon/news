@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity implements
 
 	/** 常量 **/
 	private static final String TAG = "MainActivity";
+	
 	/** 控件类 **/
 	private FragmentTabHost mTabHost;
 	@SuppressWarnings("rawtypes")

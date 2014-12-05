@@ -15,6 +15,7 @@
         android:layout_marginBottom="13dp"
         android:singleLine="true"
         android:paddingLeft="30dp"
+        android:textColor="#FFFFFF"
         />
     
 	<TextView
@@ -24,5 +25,6 @@
         android:textSize="25sp"
         android:layout_marginTop="13dp"
         android:layout_marginBottom="13dp"
-        android:paddingRight="30dp"/>
+        android:paddingRight="30dp"
+        android:textColor="#FFFFFF"/>
 </LinearLayout>

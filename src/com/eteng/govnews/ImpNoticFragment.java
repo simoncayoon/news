@@ -76,11 +76,10 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 	 */
 	private void getNews() {
 		showProgress();
-		DebugFlags.logD("test", "获取新闻内容");
-		String url = Constants.WS_ADDRESS;// 接口地址
+		String url = Constants.WS_ADDRESS + Constants.GET_LIST;// 接口地址
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
-		builder.appendQueryParameter("PageSize", "20");
+		builder.appendQueryParameter("PageSize", Constants.PAGE_SIZE);
 		builder.appendQueryParameter("type", Constants.TYPE_NOTICE);
 		jsonObjRequest = new JsonObjectRequest(Request.Method.GET,
 				builder.toString(), null, new Response.Listener<JSONObject>() {
@@ -99,8 +98,8 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 							} else if (respon.getString("code").equals("99")) {// 服务端错误
 
 							} else {// 请求参数错误
-							// Toast.makeText(getActivity(), "暂无数据",
-							// Toast.LENGTH_SHORT).show();
+								// Toast.makeText(getActivity(), "暂无数据",
+								// Toast.LENGTH_SHORT).show();
 							}
 
 						} catch (Exception e) {
@@ -146,9 +145,8 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 			long id) {
 		NewsInfo item = dataList.get(position);
 		Intent mIntent = new Intent(getActivity(), DetailCotentActivity.class);
-		mIntent.putExtra("title", item.getNewsTitle());
-		mIntent.putExtra("content", item.getNewsContent());
-		mIntent.putExtra("category", item.getNewsCategoty());
+		mIntent.putExtra(Constants.INTENT_ID_KEY, item.getNewsId());
+		mIntent.putExtra(Constants.INTENT_CATEGORY, item.getNewsCategoty());
 		startActivity(mIntent);
 
 	}
@@ -160,6 +158,7 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 	 * @throws Exception
 	 */
 	private void parseToList(JSONArray jsonArray) throws Exception {
+		dataList.clear();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject item = new JSONObject(jsonArray.getString(i));
 			NewsInfo vInfo = new NewsInfo();

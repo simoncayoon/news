@@ -46,7 +46,6 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 	private JsonObjectRequest jsonObjRequest;
 	private RequestQueue mVolleyQueue;
 	private ArrayList<NewsInfo> dataList;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,11 +67,11 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 	 * 获取网络新闻列表
 	 */
 	private void getNews() {
-//		showProgress();
-		String url = Constants.WS_ADDRESS;// 接口地址
+		showProgress();
+		String url = Constants.WS_ADDRESS + Constants.GET_LIST;// 接口地址
 		Uri.Builder builder = Uri.parse(url).buildUpon();
 		builder.appendQueryParameter("PageIndex", "1");
-		builder.appendQueryParameter("PageSize", "20");
+		builder.appendQueryParameter("PageSize", Constants.PAGE_SIZE);
 		builder.appendQueryParameter("type", Constants.TYPE_GOV);
 		jsonObjRequest = new JsonObjectRequest(Request.Method.GET,
 				builder.toString(), null, new Response.Listener<JSONObject>() {
@@ -98,7 +97,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 
 							e.printStackTrace();
 						} finally {
-//							stopProgress();
+							stopProgress();
 						}
 
 					}
@@ -106,7 +105,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-//						stopProgress();
+						stopProgress();
 						if (error instanceof NetworkError) {
 							DebugFlags.logD("test", "NetworkError");
 						} else if (error instanceof ClientError) {
@@ -136,12 +135,10 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		NewsInfo item = dataList.get(position);
-		Intent mIntent = new Intent(getActivity(), DetailCotentActivity.class);
-		mIntent.putExtra("title", item.getNewsTitle());
-		mIntent.putExtra("content", item.getNewsContent());
-		mIntent.putExtra("category", item.getNewsCategoty());
+		Intent mIntent = new Intent(getActivity(), DetailCotentActivity.class);		
+		mIntent.putExtra(Constants.INTENT_ID_KEY, item.getNewsId());
+		mIntent.putExtra(Constants.INTENT_CATEGORY, item.getNewsCategoty());
 		startActivity(mIntent);
-
 	}
 
 	/**
@@ -151,6 +148,7 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 	 * @throws Exception
 	 */
 	private void parseToList(JSONArray jsonArray) throws Exception {
+		dataList.clear();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject item = new JSONObject(jsonArray.getString(i));
 			NewsInfo vInfo = new NewsInfo();
@@ -158,19 +156,18 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 			vInfo.setNewsTitle(item.getString("ntf_ttl"));
 			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
 					"UTF-8");
-			// DebugFlags.logD("test", newsContent);
-			vInfo.setNewsContent(newsContent);
+			vInfo.setNewsContent(newsContent.replaceAll("<\\s*img\\s+([^>]*)\\s*>",""));//去掉图片标签
 			vInfo.setNewsDate(item.getString("cre_date"));
 			vInfo.setNewsCategoty(Constants.TYPE_GOV);
 			dataList.add(vInfo);
 		}
 	}
 
-//	private void showProgress() {
-//		mProgress = ProgressDialog.show(getActivity(), "", "加载中...");
-//	}
-//
-//	private void stopProgress() {
-//		mProgress.cancel();
-//	}
+	private void showProgress() {
+		mProgress = ProgressDialog.show(getActivity(), "", "加载中...");
+	}
+
+	private void stopProgress() {
+		mProgress.cancel();
+	}
 }
