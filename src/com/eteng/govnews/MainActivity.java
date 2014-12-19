@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity implements
 	private FragmentTabHost mTabHost;
 	@SuppressWarnings("rawtypes")
 	private final Class[] fragmentArray = { ImpNoticFragment.class,
-			GovFragment.class, GuiZhouFragment.class };
+		GuiZhouFragment.class, GovFragment.class,  };
 	private List<Fragment> fragmentList;
 	private ViewPager funcViewPager;
 
@@ -51,8 +51,8 @@ public class MainActivity extends FragmentActivity implements
 		// 得到fragment的个数
 		int count = fragmentArray.length;
 		int[] drawableID = { R.drawable.impo_notice_navi_selector,
-				R.drawable.gov_news_navi_selector,
-				R.drawable.gz_dynamic_navi_selector };
+				R.drawable.gz_dynamic_navi_selector,
+				R.drawable.gov_news_navi_selector};
 		for (int i = 0; i < count; i++) {
 			TabSpec tabSpec = mTabHost.newTabSpec(TAG)
 					.setIndicator(

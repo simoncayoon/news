@@ -7,12 +7,11 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.ClientError;
@@ -37,8 +36,8 @@ public class DetailCotentActivity extends Activity {
 	private String title = "";
 	private String content = "";
 	private String id = "";
-	private TextView titleView;
-	private TextView contentView;
+//	private TextView titleView;
+	private WebView contentView;
 	private ImageView naviView;
 	private ProgressDialog mProgress;
 
@@ -51,8 +50,10 @@ public class DetailCotentActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detail_layout);	
 		mVolleyQueue = Volley.newRequestQueue(this);
-		contentView = (TextView) findViewById(R.id.contentView);
-		titleView = (TextView) findViewById(R.id.titleView);
+		contentView = (WebView) findViewById(R.id.contentView);
+//		contentView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bj));
+		contentView.setBackgroundColor(Color.argb(0xff, 0xee, 0xee, 0xee));
+//		titleView = (TextView) findViewById(R.id.titleView);
 		naviView = (ImageView) findViewById(R.id.navi_image_view);
 		id = getIntent().getStringExtra(Constants.INTENT_ID_KEY);
 		category = getIntent().getStringExtra(Constants.INTENT_CATEGORY);
@@ -95,9 +96,10 @@ public class DetailCotentActivity extends Activity {
 								JSONArray contentArray = new JSONArray(
 										respon.getString("msg"));
 								parse(contentArray);
-								titleView.setText(title);
-								contentView.setText(Html.fromHtml(content));
-								contentView.setMovementMethod(ScrollingMovementMethod.getInstance());
+//								titleView.setText(title);
+								contentView.loadDataWithBaseURL(null,  "<div style=\"padding-top:20px;\">" + title + content+ "</div>", "text/html", "utf-8", null);
+//								contentView.setText(Html.fromHtml(content));
+//								contentView.setMovementMethod(ScrollingMovementMethod.getInstance());
 							} else if (respon.getString("code").equals("99")) {// 服务端错误
 
 							} else {// 请求参数错误
@@ -154,7 +156,14 @@ public class DetailCotentActivity extends Activity {
 			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
 					"UTF-8");
 			this.title = item.getString("ntf_ttl");
+			this.title = "<div style='font-size:36px;font-family:\"微软雅黑\",Droid Sans Fallback;text-align:center;'><strong>" + this.title + "</strong></div>";
 			this.content = newsContent.replaceAll("<\\s*img\\s+([^>]*)\\s*>","");
+			
+			int start_index = content.indexOf("<p>\\s*附件");
+			int end_index = content.indexOf("</font>");
+			DebugFlags.logD("Eteng", "start_index : " + start_index + ",end_index : " + end_index);
+			content = content.replaceAll("<p>\\s*附件(\\s*.*)*", "</font>");
+			this.content = "<div style=\"line-height:1.5;margin-top:30px;padding-left:40px;padding-right:40px;font-size:30px;font-family:\"微软雅黑\",Droid Sans Fallback;\">" + content + "</div>";
 		}
 	}
 	

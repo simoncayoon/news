@@ -21,17 +21,21 @@
             android:contentDescription="@string/imgDesc" />
     </LinearLayout>
 
-    <TextView
+    <!--
+         TexttView
         android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
         android:layout_marginRight="150dp"
         android:gravity="center"
+        android:visibility="gone"
         android:textSize="40sp" />
+    -->
 
-    
-         <TextView
+
+    <!--
+        <TextView
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,20 +48,22 @@
         android:singleLine="false"
         android:paddingLeft="100dp"
         android:paddingRight="100dp" />
-   
+    -->
 
-<!--     <WebView
+
+ 
+        <WebView
         android:id="@+id/contentView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="40dp"
-        android:paddingLeft="100dp"
-        android:paddingRight="100dp"
-        android:scrollbars="vertical"
-        android:textSize="30sp"
-        android:background="@android:color/transparent" /> -->
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+    
+   <!--
+    <com.eteng.govnews.EtengWebView
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />-->
 
 </LinearLayout>
