@@ -6,21 +6,55 @@
     android:orientation="vertical"
     tools:context="${packageName}.${activityClass}" >
 
-    <android.support.v4.app.FragmentTabHost
+<!--     <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:background="#22e9e8ed" >
+        android:background="#22e9e8ed"
+        android:focusable="false"
+        android:focusableInTouchMode="false" >
 
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="0" />
-    </android.support.v4.app.FragmentTabHost>
+    </android.support.v4.app.FragmentTabHost> -->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#22e9e8ed"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp" >
+        <ImageView
+            android:id="@+id/title_impo_notice"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/impo_notice_navi_selector"
+            android:contentDescription="@string/imgDesc"
+            android:focusable="false"/>
+        <ImageView
+            android:id="@+id/title_gz_dynamic"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/gz_dynamic_navi_selector"
+            android:contentDescription="@string/imgDesc"
+            android:focusable="false"/>
+        <ImageView
+            android:id="@+id/title_gov_news"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/gov_news_navi_selector"
+            android:contentDescription="@string/imgDesc"
+            android:focusable="false"/>
+    </LinearLayout>
+    
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"

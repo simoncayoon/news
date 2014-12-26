@@ -13,7 +13,12 @@ public class DebugFlags {
 	
 	private static final boolean flag = true;
 
-//	private static final String TAG = "Eteng";
+	private static final String TAG = "Eteng";
+	
+	public static void logD(String msg){
+		if(flag)
+			Log.d(TAG, msg);
+	}
 
 	public static void logD(String TAG, String msg){
 		if(flag)

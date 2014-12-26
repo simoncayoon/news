@@ -1,6 +1,5 @@
 package com.eteng.govnews;
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -39,6 +38,7 @@ import com.eteng.govnews.utils.DebugFlags;
 
 public class GovFragment extends Fragment implements OnItemClickListener {
 
+	public static final String TAG = "GovFragment";
 	private ListView govListView;
 	private ProgressDialog mProgress;
 
@@ -59,7 +59,6 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 		View view = inflater.inflate(R.layout.data_list_view, null);
 		govListView = (ListView) view.findViewById(R.id.news_list_view);
 		govListView.setOnItemClickListener(this);
-		getNews();
 		return view;
 	}
 
@@ -154,9 +153,9 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 			NewsInfo vInfo = new NewsInfo();
 			vInfo.setNewsId(item.getString("id"));
 			vInfo.setNewsTitle(item.getString("ntf_ttl"));
-			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
-					"UTF-8");
-			vInfo.setNewsContent(newsContent.replaceAll("<\\s*img\\s+([^>]*)\\s*>",""));//去掉图片标签
+//			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
+//					"UTF-8");
+//			vInfo.setNewsContent(newsContent.replaceAll("<\\s*img\\s+([^>]*)\\s*>",""));//去掉图片标签
 			vInfo.setNewsDate(item.getString("cre_date"));
 			vInfo.setNewsCategoty(Constants.TYPE_GOV);
 			dataList.add(vInfo);
@@ -169,5 +168,35 @@ public class GovFragment extends Fragment implements OnItemClickListener {
 
 	private void stopProgress() {
 		mProgress.cancel();
+	}
+	
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		if(isVisibleToUser && isVisible()){
+			DebugFlags.logD("test setUserVisibleHint");
+			if(dataList.size() <= 0){
+				getNews();
+			}
+		}
+		super.setUserVisibleHint(isVisibleToUser);
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		DebugFlags.logD(TAG + "==============onDetach");
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		DebugFlags.logD(TAG + "==============onDestroyView");
 	}
 }

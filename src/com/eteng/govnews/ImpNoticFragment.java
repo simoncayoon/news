@@ -1,11 +1,11 @@
 package com.eteng.govnews;
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,6 +39,7 @@ import com.eteng.govnews.utils.DebugFlags;
 
 public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 
+	public static final String TAG = "ImpNoticFragment";
 	private ListView impoListView;
 	private ProgressDialog mProgress;
 
@@ -54,6 +55,7 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 		mVolleyQueue = Volley.newRequestQueue(getActivity());
 		dataList = new ArrayList<NewsInfo>();
 	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +88,6 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 
 					@Override
 					public void onResponse(JSONObject respon) {
-
 						try {
 							if (respon.getString("code").equals("0")) {// 返回数据正常
 
@@ -98,8 +99,6 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 							} else if (respon.getString("code").equals("99")) {// 服务端错误
 
 							} else {// 请求参数错误
-								// Toast.makeText(getActivity(), "暂无数据",
-								// Toast.LENGTH_SHORT).show();
 							}
 
 						} catch (Exception e) {
@@ -164,21 +163,39 @@ public class ImpNoticFragment extends Fragment implements OnItemClickListener {
 			NewsInfo vInfo = new NewsInfo();
 			vInfo.setNewsId(item.getString("id"));
 			vInfo.setNewsTitle(item.getString("ntf_ttl"));
-			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
-					"UTF-8");
+//			String newsContent = URLDecoder.decode(item.getString("ntf_ctt"),
+//					"UTF-8");
 			// DebugFlags.logD("test", newsContent);
-			vInfo.setNewsContent(newsContent);
+//			vInfo.setNewsContent(newsContent);
 			vInfo.setNewsDate(item.getString("cre_date"));
 			vInfo.setNewsCategoty(Constants.TYPE_NOTICE);
 			dataList.add(vInfo);
 		}
 	}
-
+	
 	private void showProgress() {
 		mProgress = ProgressDialog.show(getActivity(), "", "加载中...");
 	}
 
 	private void stopProgress() {
 		mProgress.cancel();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		DebugFlags.logD("onAttach");
+		super.onAttach(activity);
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		DebugFlags.logD(TAG + "==============onDetach");
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		DebugFlags.logD(TAG + "==============onDestroyView");
 	}
 }
